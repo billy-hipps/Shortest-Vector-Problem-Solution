@@ -8,9 +8,9 @@
 #include "checkArgs.h"
 #include "getBasis.h"
 #include "listSieve.h"
+#include "cosScore.h"
 #include "writeTXT.h"
 
-#define c 7
 #define k pow(2, (c*dim))
 
 int main(int argc, char *argv[]) {
@@ -29,6 +29,7 @@ int main(int argc, char *argv[]) {
         printf("Error reading inputs.\n");
         return -1;
     }
+    c = cosScore(basis); 
     // Allocate memory for reduced lattice vectors 
     double **L = (double **)malloc((k) * sizeof(double *));
     if (L == NULL) {

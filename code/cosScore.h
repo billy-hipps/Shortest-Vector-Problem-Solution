@@ -1,0 +1,1 @@
+int cosScore(double** basis);

@@ -8,6 +8,9 @@
 // Global variable to store the dimension
 int dim;
 
+// Global variable to store sampling limiting factor
+int c;
+
 // Function to set the global dimension variable
 void set_dim(double d) {
     dim = d;
@@ -55,4 +58,25 @@ int isIn(double* vec, double** list, long int nVectors) {
         }
     }
     return flag;
+}
+
+double dotProd(double* vec1, double* vec2) {
+    double dotProd = 0;
+    for (int i = 0; i < dim; i++) {
+        dotProd += (vec1[i]*vec2[i]);
+    }
+    return dotProd;
+}
+
+double cosSimilarity(double* vec1, double*vec2) {
+    double dot = dotProd(vec1, vec2);
+    double v1Norm = L2_norm(vec1);
+    double v2Norm = L2_norm(vec2);
+    double similarity = dot/(v1Norm*v2Norm);
+    if ((v1Norm == 0) || (v2Norm ==0)) {
+        printf("error in sim\n");
+        return 0;
+    } else {
+        return similarity;
+    }
 }

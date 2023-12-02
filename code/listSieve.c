@@ -8,7 +8,6 @@
 #include "reduce.h"
 #include "sample.h"
 
-#define c 7
 #define k pow(2, (c*dim))
 
 // Function to perform the list sieve algorithm

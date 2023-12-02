@@ -7,8 +7,8 @@
 #include "common.h"
 #include "sample.h"
 
-#define max 3
-#define min -3
+#define max 5
+#define min -5
 
 // Function to generate a random vector v using the basis vectors
 int sample(double** basis, double* v) {

@@ -1,0 +1,5 @@
+KEY MARKING CRITERIA: 
+// input vector format: [1.0 0.0 0.0] [0.0 1.0 0.0] [0.0 0.0 1.0] 
+// always the same number of vectors as dimensions 
+// program should parse arguments, infer dimension and solve 
+// create a text file 'result.txt' with one number in it 

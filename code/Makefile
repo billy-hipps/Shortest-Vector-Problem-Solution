@@ -1,6 +1,6 @@
 OUTPUTS = runme 
-OBJECTS = runme.o get_dim.o set_dim.o 
-DEPS = dim.h get_dim.h set_dim.h 
+OBJECTS = common.o
+DEPS = common.h
 CC = gcc
 
 

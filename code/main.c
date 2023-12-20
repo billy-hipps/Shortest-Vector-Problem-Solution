@@ -1,15 +1,16 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <math.h>
 
-#include "set_dim.h"
-#include "get_dim.h"
-#include "dim.h"
+#include "common.h"
 
 
-int main(double argc, char *argv[]) { 
+int main(int argc, char *argv[]) { 
 
     // use argument count to infer dimension 
-    set_dim(sqrt((argc - 1)));
+    argc -= 1;
+    double d = sqrt((double)argc);
+    set_dim(d);
     dim = get_dim();
 
     // allocate memory for a list of pointers to lists where the basis vectors will be stored 
@@ -36,6 +37,13 @@ int main(double argc, char *argv[]) {
         }
     }   
 
+    for (int k = 0; k < dim; k++) {
+        printf("\n");
+        printf("vector %d \n", k);
+        for (int e; e < dim; e++) {
+            printf(&basis[k][e]);
+        }
+    }
 
     // free memory allocated for basis vectors after function calls 
     for (int i = 0; i < dim; i++) {

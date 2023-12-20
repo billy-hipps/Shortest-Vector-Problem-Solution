@@ -1,11 +1,11 @@
-OUTPUTS = runme 
+OUTPUTS = runme test
 OBJECTS = common.o
 DEPS = common.h
 CC = gcc
 
 
 all: $(OBJECTS) main.c $(DEPS)
-	$(CC) -o $(OUTPUTS) main.c $(OBJECTS) 
+	$(CC) -o runme main.c $(OBJECTS) 
 
 %.o: %.c $(DEPS)
 	$(CC) -c $< -o $@

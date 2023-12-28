@@ -1,5 +1,8 @@
-#include "common.h"
+#include <stdlib.h>
+#include <stdio.h>
 #include <math.h> 
+
+#include "common.h"
 
 extern int dim;
 
@@ -7,37 +10,30 @@ void set_dim(double d) {
     dim = d;
 }
 
-int get_dim() {
+double get_dim() {
     return dim; 
 } 
 
-float scalar_prod(int a, float *vec) {
-    float *new_vec;
-    new_vec = (float*) malloc(dim * sizeof(float));
-
+void scalar_prod(int a, float* vec, float* result) {
     for (int i; i < dim; i++) {
-        new_vec[i] = vec[i] * a;
+        result[i] = vec[i] * a;
     } 
-    return *new_vec;
 }
-
-float vec_prod(float *vec1, float *vec2) {
-    float *new_vec;
-    new_vec = (float*) malloc(dim * sizeof(float));
-
+void vec_prod(float* vec1, float* vec2, float* result) {
     for (int i; i < dim; i++) {
-        new_vec[i] = (vec1[i] * vec2[i]);
-    }
-    return *new_vec; 
-}
-
-void vec_diff(float *vec1, float *vec2) {
-    for (int i; i < dim; i++) {
-        vec1[i] - vec2[i];
+        result[i] = (vec1[i] * vec2[i]);
     }
 }
 
-float L2_norm(float *vec) {
+float* vec_diff(float* vec1, float* vec2) {
+    float* result = (float*) malloc(dim * sizeof(int));
+    for (int i; i < dim; i++) {
+        result[i] = vec1[i] - vec2[i];
+    }
+    return result; 
+}
+
+float L2_norm(float* vec) {
     float total = 0;
     for (int i; i < dim; i++) {
         total += vec[i] * vec[i];

@@ -1,0 +1,1 @@
+float** reduce(float* p, float** L, float delta);

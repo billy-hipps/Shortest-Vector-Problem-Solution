@@ -23,7 +23,7 @@ int main(int argc, char *argv[]) {
 
     // allocate memory for, and copy command line arguments into basis vectors 
     for (int i = 0; i < (argc - 1); i++) {
-        if ((i) || (i % dim)) {
+        if ((i == 0) || ((i % dim) == 0)) {
             basis[i] = (float*) malloc(dim * sizeof(float));
             if (basis[i] == NULL) {
                 printf("Memory allocation failed.\n");
@@ -40,7 +40,7 @@ int main(int argc, char *argv[]) {
     for (int k = 0; k < dim; k++) {
         printf("\n");
         printf("vector %d \n", k);
-        for (int e; e < dim; e++) {
+        for (int e = 0; e < dim; e++) {
             printf(&basis[k][e]);
         }
     }
@@ -48,8 +48,10 @@ int main(int argc, char *argv[]) {
     // free memory allocated for basis vectors after function calls 
     for (int i = 0; i < dim; i++) {
         free(basis[i]);
+        basis[i] = NULL;
     }
     free(basis);
+    basis = NULL;
 
     return 0; 
 }

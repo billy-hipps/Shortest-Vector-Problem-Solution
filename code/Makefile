@@ -1,6 +1,6 @@
 OUTPUTS = runme test
-OBJECTS = common.o
-DEPS = common.h
+OBJECTS = common.o getVecs.o listSieve.o reduce.o sample.o 
+DEPS = common.h getVecs.h listSieve.h reduce.h sample.h getVecs.h
 CC = gcc
 
 

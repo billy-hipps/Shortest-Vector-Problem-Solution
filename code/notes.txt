@@ -2,4 +2,55 @@ KEY MARKING CRITERIA:
 // input vector format: [1.0 0.0 0.0] [0.0 1.0 0.0] [0.0 0.0 1.0] 
 // always the same number of vectors as dimensions 
 // program should parse arguments, infer dimension and solve 
-// create a text file 'result.txt' with one number in it 
+// create a text file 'result.txt' with one number in it  
+
+Files to create: 
+sample.c - used to sample vectors on the lattice 
+    select a random error vector e a short vector in a hypersphere around the origin 
+    using e, find a corresponding lattice vector p by taking e % B  
+    v is a lattice vector such that: v = p - e
+
+reduce.c - used to reduce sampled vectors 
+
+
+solver.c - brings together all files to solve SVP 
+
+REMEMBER TO FREE MEMORY IN listSieve.c 
+
+#include <stdlib.h>
+#include <stdio.h>
+#include <math.h>
+#include <time.h>
+
+#include "common.h"
+#include "sample.h" 
+
+float** sample(float** basis, float radius) {
+    
+    // create a pointer array to store e and p so they can be returned together 
+    float** result = (float**) malloc(2 * sizeof(float *));
+
+    // initialise vectors e, v, and p. 
+    float* e = (float*)malloc(dim * sizeof(float));
+    float* p = (float*)malloc(dim * sizeof(float));
+
+    // generate random values for e 
+    srand(time(NULL));
+    for (int i = 0; i < dim; i++) {
+        e[i] = radius * (2 * randomFloat() - 1); // generate a random float between -radius and +radius 
+    }
+
+    // find p by doing e mod basis 
+    for (int i = 0; i < dim; i++) {
+        p[i] = 0;
+        for (int j = 0; j < dim; j++) {
+            p[i] += e[j] * basis[j][i];
+        }
+        p[i] = fmod(p[i], 1.0);  // Take e modulo B
+        }
+    
+    result[0] = e;
+    result[1] = p; 
+
+    return result;
+}

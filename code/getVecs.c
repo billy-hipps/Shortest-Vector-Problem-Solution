@@ -15,9 +15,11 @@
 float** getVecs(float** basis) {
     
     // set the number of vectors to be sampled 
-    long n = pow(2, dim); 
+    long n = pow(2, dim) / 2; 
 
-    float** L = (float**) malloc(n * sizeof(float));
+    float** L = (float**) malloc(n * sizeof(float *));
+    // to save time initialise multipliers here 
+
     for (int i = 0; i < n; i++) {
         L[i] = (float*) calloc(dim, sizeof(float)); 
         // create 'dim' random numbers 
@@ -34,5 +36,6 @@ float** getVecs(float** basis) {
         free(multipliers);
         multipliers = NULL;
     }
+    // if multipliers is initialised outside loop, free here
     return L; 
 }

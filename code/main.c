@@ -3,49 +3,23 @@
 #include <math.h>
 
 #include "common.h"
+#include "getBasis.h"
 
 
 int main(int argc, char *argv[]) { 
 
-    // use argument count to infer dimension 
-    argc -= 1;
-    double d = sqrt((double)argc);
-    set_dim(d);
-    dim = get_dim();
+    float** basis = getBasis(argc, argv);
+    //float mu = 0.685;
+    //float* shortestVec = listSieve(basis, mu);
+    //float norm = L2_norm(shortestVec); 
 
-    // allocate memory for a list of pointers to lists where the basis vectors will be stored 
-    static float** basis;
-    basis = (float**) malloc(dim * sizeof(float));
-    if (basis == NULL) {
-        printf("Memory allocation failed.\n");
-        exit(EXIT_FAILURE);
-    }
+    // write norm to a txt file 
+    //writeTXT(norm);
 
-    // allocate memory for, and copy command line arguments into basis vectors 
-    for (int i = 0; i < (argc - 1); i++) {
-        if ((i == 0) || ((i % dim) == 0)) {
-            basis[i] = (float*) malloc(dim * sizeof(float));
-            if (basis[i] == NULL) {
-                printf("Memory allocation failed.\n");
-            exit(EXIT_FAILURE);
-            }
-            fscanf(argv[i], "[%f", &basis[i][0]);
-            for (int j = (i+1); j < (i + (dim-2)); j++) {
-                fscanf(argv[j], "%f", &basis[i][j]);
-            }
-            fscanf(argv[i + (dim - 1)], "%f]", &basis[i][dim - 1]);
-        }
-    }   
+    // free memory allocated 
+    //free(shortestVec);
+    //shortestVec = NULL;
 
-    for (int k = 0; k < dim; k++) {
-        printf("\n");
-        printf("vector %d \n", k);
-        for (int e = 0; e < dim; e++) {
-            printf(&basis[k][e]);
-        }
-    }
-
-    // free memory allocated for basis vectors after function calls 
     for (int i = 0; i < dim; i++) {
         free(basis[i]);
         basis[i] = NULL;
@@ -53,5 +27,5 @@ int main(int argc, char *argv[]) {
     free(basis);
     basis = NULL;
 
-    return 0; 
+    return 0;
 }

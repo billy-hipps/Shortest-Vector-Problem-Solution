@@ -19,15 +19,22 @@ float* ListReduce(float* p, float** L, float delta) {
     float len_p = delta * L2_norm(p); 
 
     for (int i = 0; i < len_L; i++) { 
-        float* diff = vec_diff(p, L[i]);  
+        // initialise a list to store the difference between p and v 
+        float* diff = vec_diff(p, L[i]); 
+        // check that p can be reduced by v  
         float len = L2_norm(diff); 
         if (len <= len_p) {
+            // update p with the values from p-v
             for (int j = 0; j < dim; j++) {
-                p[i] = diff[i]; // update p with the values from p-v 
+                p[i] = diff[i]; 
             }
+            // p has been updated, free diff 
             free(diff);
-            diff = NULL; // diff is not needed anymore 
+            diff = NULL;  
         } 
+        // p has not been updated, free diff 
+        free(diff);
+        diff = NULL;
     } 
     return p;  
 }

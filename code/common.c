@@ -4,7 +4,7 @@
 
 #include "common.h"
 
-extern int dim;
+int dim;
 
 void set_dim(double d) {
     dim = d;
@@ -18,11 +18,6 @@ void scalar_prod(int a, float* vec, float* result) {
     for (int i; i < dim; i++) {
         result[i] = vec[i] * a;
     } 
-}
-void vec_prod(float* vec1, float* vec2, float* result) {
-    for (int i; i < dim; i++) {
-        result[i] = (vec1[i] * vec2[i]);
-    }
 }
 
 float* vec_diff(float* vec1, float* vec2) {

@@ -18,12 +18,25 @@ float** getVecs(float** basis) {
     long n = pow(2, dim) / 2; 
 
     float** L = (float**) malloc(n * sizeof(float *));
+    if (L == NULL) {
+        printf("Memory allocation failed.\n");
+        exit(EXIT_FAILURE);
+    }
     // to save time initialise multipliers here 
 
     for (int i = 0; i < n; i++) {
         L[i] = (float*) calloc(dim, sizeof(float)); 
+        if (L == NULL) {
+            printf("Memory allocation failed.\n");
+            exit(EXIT_FAILURE);
+        }
         // create 'dim' random numbers 
         int* multipliers = (int*) malloc(dim * sizeof(int));
+        if (L == NULL) {
+            printf("Memory allocation failed.\n");
+            exit(EXIT_FAILURE);
+        }
+        
         for (int j = 0; j < dim; j++) {
             multipliers[i] = (rand() %(max +1 -min)) + min;  
         }

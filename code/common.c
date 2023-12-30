@@ -31,7 +31,7 @@ float* vec_diff(float* vec1, float* vec2) {
 float L2_norm(float* vec) {
     float total = 0;
     for (int i; i < dim; i++) {
-        total += vec[i] * vec[i];
+        total += pow(fabs(vec[i]), 2);
     }
     total = sqrtf(total);
     return total;

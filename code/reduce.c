@@ -7,7 +7,7 @@
 // make this recursive if needed - using flags 
 
 float* reduce(float* p, float** L, float delta) {
-    printf("reduce");
+
     long len_L = sizeof(L) / sizeof(L[0]);
     float len_p = delta * L2_norm(p); 
 

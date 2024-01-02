@@ -7,34 +7,19 @@
 #include "common.h"
 #include "sample.h" 
 
-float** sample(float** basis, float radius) {
-    printf("sample");
-    float** result = (float**)malloc(2 * sizeof(float*));
-    float* e = (float*)malloc(dim * sizeof(float));
-    float* p = (float*)malloc(dim * sizeof(float));
-
-    srand(time(NULL));
+int sample(float** basis, float radius, float** e_p) {
 
     for (int i = 0; i < dim; i++) {
-        e[i] = radius * (2 * ((float)rand() / RAND_MAX) - 1);
+        e_p[0][i] = radius * (2 * ((float)rand() / RAND_MAX) - 1);
     }
 
     for (int i = 0; i < dim; i++) {
-        p[i] = 0;
+        e_p[1][i] = 0;
         for (int j = 0; j < dim; j++) {
-            p[i] += e[j] * basis[j][i];
+            e_p[1][i] += e_p[0][j] * basis[j][i];
         }
-        p[i] = fmod((double)p[i], 1.0);
+        e_p[1][i] = fmod((double)e_p[1][i], 1.0);
     }
 
-    result[0] = (float*)malloc(dim * sizeof(float));
-    result[1] = (float*)malloc(dim * sizeof(float));
-
-    memcpy(result[0], e, dim * sizeof(float));
-    memcpy(result[1], p, dim * sizeof(float));
-
-    free(e);
-    free(p);
-
-    return result;
+    return 0;
 }

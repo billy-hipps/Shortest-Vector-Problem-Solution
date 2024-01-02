@@ -10,16 +10,13 @@
 
 int main(int argc, char *argv[]) { 
 
-    printf("main");
+    srand(time(NULL));
     float** basis = getBasis(argc, argv);
     float mu = 0.685;
     shortVec shortestVecResult;
     int status = listSieve(basis, mu, &shortestVecResult);
     if (status == 0) {
         // The result is available in shortestVecResult
-        // Use the result as needed
-        printf("Shortest vector length: %f\n", shortestVecResult.len);
-
         // write norm to a txt file
         writeTXT(shortestVecResult.len);
     } else {

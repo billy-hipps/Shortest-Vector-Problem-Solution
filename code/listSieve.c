@@ -9,20 +9,6 @@
 #include "reduce.h"
 #include "sample.h"
 
-void free_mem(long int nVecs, shortVec* shortVecs, float** L) {
-    for (int a = 0; a < nVecs; a++) {
-        free(shortVecs[a].vec);
-        shortVecs[a].vec = NULL;
-    }
-    free(shortVecs); 
-
-    for (int b = 0; b < nVecs; b++) {
-        free(L[b]);
-        L[b] = NULL;
-    }
-    free(L);
-}
-
 int listSieve(float** basis, float mu, shortVec* result) {
     printf("listSieve");
     shortVec* shortestVec;
@@ -41,7 +27,14 @@ int listSieve(float** basis, float mu, shortVec* result) {
     float** L = getVecs(basis);
 
     for (int i = 0; i < k; i++) {
-        float** e_p = sample(basis, (epsilon * delta));
+        float** e_p = (float**)malloc(2 * sizeof(float*));
+        e_p[0] = (float*)malloc(dim * sizeof(float));
+        e_p[1] = (float*)malloc(dim * sizeof(float));
+        int status = sample(basis, (epsilon * delta), e_p);
+        if (status != 1) {
+            printf("Error in sample.");
+        }
+
         float* p = reduce(e_p[1], L, delta);
         float* v = vec_diff(p, e_p[0]); 
 
@@ -53,6 +46,8 @@ int listSieve(float** basis, float mu, shortVec* result) {
             free(e_p[c]);
             e_p[c] = NULL;
         }
+        free(e_p);
+        e_p = NULL;
 
         if (i == 0) {
             shortVecs[0] = V; 
@@ -72,7 +67,17 @@ int listSieve(float** basis, float mu, shortVec* result) {
                 shortestVector->len = lenDiff;
 
                 memcpy(result, shortestVector, sizeof(shortVec));
-                free_mem(nVecs, shortVecs, L);
+                for (int a = 0; a < nVecs; a++) {
+                    free(shortVecs[a].vec);
+                    shortVecs[a].vec = NULL;
+                }
+                free(shortVecs); 
+
+                for (int b = 0; b < nVecs; b++) {
+                    free(L[b]);
+                    L[b] = NULL;
+                }
+                free(L);
                 return 0; 
             }
         }
@@ -96,6 +101,18 @@ int listSieve(float** basis, float mu, shortVec* result) {
         }
     }
 
-    free_mem(nVecs, shortVecs, L);
+    for (int a = 0; a < nVecs; a++) {
+        free(shortVecs[a].vec);
+        shortVecs[a].vec = NULL;
+    }
+    free(shortVecs); 
+    shortVecs = NULL;
+
+    for (int b = 0; b < nVecs; b++) {
+        free(L[b]);
+        L[b] = NULL;
+    }
+    free(L);
+    L = NULL;
     return 0; 
 }

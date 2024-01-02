@@ -14,6 +14,7 @@
 
 float** getVecs(float** basis) {
     
+    printf("getVecs");
     // set the number of vectors to be sampled 
     long n = pow(2, dim) / 2; 
 
@@ -22,7 +23,6 @@ float** getVecs(float** basis) {
         printf("Memory allocation failed.\n");
         exit(EXIT_FAILURE);
     }
-    // to save time initialise multipliers here 
 
     for (int i = 0; i < n; i++) {
         L[i] = (float*) calloc(dim, sizeof(float)); 

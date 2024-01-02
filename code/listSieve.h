@@ -5,4 +5,4 @@ typedef struct {
 
 void free_mem(long int nVecs, shortVec* shortVecs, float** L);
 
-shortVec* listSieve(float** basis, float mu);
+int listSieve(float** basis, float mu, shortVec* result);

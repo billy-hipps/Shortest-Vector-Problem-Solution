@@ -8,6 +8,7 @@
 #include "sample.h" 
 
 float** sample(float** basis, float radius) {
+    printf("sample");
     float** result = (float**)malloc(2 * sizeof(float*));
     float* e = (float*)malloc(dim * sizeof(float));
     float* p = (float*)malloc(dim * sizeof(float));

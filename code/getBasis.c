@@ -14,9 +14,6 @@ float** getBasis(int argc, char** argv) {
     set_dim(d);
     dim = get_dim();
 
-    // error handling 
-    
-
     // allocate memory for a list of pointers to lists where the basis vectors will be stored
     static float **basis;
     basis = (float **)malloc(dim * sizeof(float *));

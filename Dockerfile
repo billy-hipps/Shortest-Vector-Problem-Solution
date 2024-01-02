@@ -7,6 +7,7 @@ COPY code /code
 RUN apt-get update && apt-get install -y \
     make \
     gcc \
+    gdb \
     bash \
     && rm -rf /var/lib/apt/lists/*
 WORKDIR /code

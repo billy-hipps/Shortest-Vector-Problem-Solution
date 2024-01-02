@@ -4,17 +4,10 @@
 
 #include "common.h" 
 
-// function ListReduce(p, L, δ) 
-// while(∃vi ∈L:|p−vi| ≤ δ|p|)do
-//     p ← p − vi 
-//     end while
-// return p 
-// end function
-
 // make this recursive if needed - using flags 
 
-float* ListReduce(float* p, float** L, float delta) {
- 
+float* reduce(float* p, float** L, float delta) {
+    printf("reduce");
     long len_L = sizeof(L) / sizeof(L[0]);
     float len_p = delta * L2_norm(p); 
 

@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
+#include <string.h>
 
 #include "listSieve.h"
 #include "common.h"
@@ -14,18 +15,16 @@ void free_mem(long int nVecs, shortVec* shortVecs, float** L) {
         shortVecs[a].vec = NULL;
     }
     free(shortVecs); 
-    shortVecs = NULL;
 
     for (int b = 0; b < nVecs; b++) {
         free(L[b]);
         L[b] = NULL;
     }
     free(L);
-    L = NULL;
 }
 
-shortVec* listSieve(float** basis, float mu) {
-
+int listSieve(float** basis, float mu, shortVec* result) {
+    printf("listSieve");
     shortVec* shortestVec;
 
     shortVec* shortVecs = (shortVec*)malloc(1 * sizeof(shortVec));
@@ -54,10 +53,6 @@ shortVec* listSieve(float** basis, float mu) {
             free(e_p[c]);
             e_p[c] = NULL;
         }
-        free(p);
-        p = NULL;
-        free(v);
-        v = NULL;
 
         if (i == 0) {
             shortVecs[0] = V; 
@@ -76,10 +71,9 @@ shortVec* listSieve(float** basis, float mu) {
                 shortestVector->vec = diff;
                 shortestVector->len = lenDiff;
 
+                memcpy(result, shortestVector, sizeof(shortVec));
                 free_mem(nVecs, shortVecs, L);
-
-                shortestVec = shortestVector;
-                return shortestVec; 
+                return 0; 
             }
         }
         size_t newSize = nVecs + 1;
@@ -97,11 +91,11 @@ shortVec* listSieve(float** basis, float mu) {
     shortestVec = &shortVecs[0];
     for (int l = 1; l < nVecs; l++) {
         if (shortVecs[l].len < shortestVec->len) {
-            shortestVec = &shortVecs[l];
+            memcpy(result, &shortVecs[l], sizeof(shortVec));
+            break;
         }
     }
 
     free_mem(nVecs, shortVecs, L);
-
-    return shortestVec; 
+    return 0; 
 }

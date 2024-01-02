@@ -5,7 +5,7 @@
 #include "writeTXT.h"
 
 void writeTXT(float norm) {
-
+    printf("writeTXT");
     FILE *f = fopen("result.txt", "w");
     if (f == NULL) {
         printf("Error Creating File.");

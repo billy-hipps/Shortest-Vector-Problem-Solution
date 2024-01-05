@@ -12,29 +12,21 @@
 // function to produce random linear combinations of basis vectors 
 // returns L - list of lattice vectors 
 
-float** getVecs(float** basis) {
-    
-    printf("getVecs");
-    // set the number of vectors to be sampled 
-    long n = pow(2, dim) / 2; 
+int getVecs(float** basis, float** L) {
 
-    float** L = (float**) malloc(n * sizeof(float *));
-    if (L == NULL) {
-        printf("Memory allocation failed.\n");
-        exit(EXIT_FAILURE);
-    }
+    long n = pow(2, dim) / 2; 
 
     for (int i = 0; i < n; i++) {
         L[i] = (float*) calloc(dim, sizeof(float)); 
         if (L == NULL) {
             printf("Memory allocation failed.\n");
-            exit(EXIT_FAILURE);
+            return -1;
         }
         // create 'dim' random numbers 
         int* multipliers = (int*) malloc(dim * sizeof(int));
         if (L == NULL) {
             printf("Memory allocation failed.\n");
-            exit(EXIT_FAILURE);
+            return -1;
         }
         
         for (int j = 0; j < dim; j++) {
@@ -50,5 +42,5 @@ float** getVecs(float** basis) {
         multipliers = NULL;
     }
     // if multipliers is initialised outside loop, free here
-    return L; 
+    return 0; 
 }

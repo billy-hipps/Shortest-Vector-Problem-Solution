@@ -1,1 +1,1 @@
-float** getVecs(float** basis); 
+int getVecs(float** basis, float** result); 

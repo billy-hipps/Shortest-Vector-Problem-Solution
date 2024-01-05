@@ -35,3 +35,26 @@ REMEMBER TO FREE MEMORY IN listSieve.c
             }
 
         }
+
+issue in listsieve line 140: 
+need to review how memory for shortVecs is allocated. 
+current system: 
+allocate 1 shortVec
+enter loop: 
+    set the shortVec to the first sampled vector 
+    loop over shortVecs:
+        if < mu:
+            allocate shortestVector to store diff 
+            free(shortVecs)
+            return 0
+        else:
+            add v to end of shortVecs 
+    
+    find shortest vector 
+    copy to result 
+    free 
+    return 0
+
+solution - shortVecs is allocated in main so should be deallocated in main. 
+try to reduce amount of allocations/ deallocations. 
+

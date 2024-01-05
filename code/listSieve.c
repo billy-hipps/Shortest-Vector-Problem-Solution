@@ -9,39 +9,59 @@
 #include "reduce.h"
 #include "sample.h"
 
-int listSieve(float** basis, float mu, shortVec* result) {
-    printf("listSieve");
-    shortVec* shortestVec;
-
-    shortVec* shortVecs = (shortVec*)malloc(1 * sizeof(shortVec));
+int listSieve(float** basis, float mu, float* result) {
+    // allocate memory for an array storing reduced vectors 
+    float** shortVecs = (float**)malloc(1 * sizeof(float *));
     if (shortVecs == NULL) {
         printf("Memory allocation failed.\n");
-        exit(EXIT_FAILURE);
+        return -1;
     }
-
+    // set parameters for sample()
     float delta = 1 - (1 / dim);
     float epsilon = 0.685;
 
+    // set limit to how many sample vectors are produced 
     long k = pow(2, dim);
 
-    float** L = getVecs(basis);
-
+    // allocate memory for L - array of lattice vectors used to by reduce() to reduce sample vectors 
+    float** L = (float**) malloc(k * sizeof(float *));
+    if (result == NULL) {
+        printf("Memory allocation failed.\n");
+        return -1;
+    }
+    // update values in L with lattice vectors usinf getVecs()
+    int gvStatus = getVecs(basis, L);
+    if (gvStatus != 0) {
+        printf("Error in getVecs.\n");
+    }
+    // sampling and reduction loop 
     for (int i = 0; i < k; i++) {
+        // allocate memory for an array containing e (peturbation vector) and p (sample vector)
         float** e_p = (float**)malloc(2 * sizeof(float*));
+        if (e_p == NULL) {
+            printf("Memory allocation failed.\n");
+            return -1;
+        }
         e_p[0] = (float*)malloc(dim * sizeof(float));
+        if (e_p[0] == NULL) {
+            printf("Memory allocation failed.\n");
+            return -1;
+        }
         e_p[1] = (float*)malloc(dim * sizeof(float));
-        int status = sample(basis, (epsilon * delta), e_p);
-        if (status != 1) {
+        if (e_p[1] == NULL) {
+            printf("Memory allocation failed.\n");
+            return -1;
+        }
+        // update e_p with a random peturbation vector (e) and a vector (p)
+        int sStatus = sample(basis, (epsilon * delta), e_p);
+        if (sStatus != 0) {
             printf("Error in sample.");
         }
-
+        // reduce p 
         float* p = reduce(e_p[1], L, delta);
+        // subtract e from p to obtain v - a lattice vector 
         float* v = vec_diff(p, e_p[0]); 
-
-        shortVec V;
-        V.vec = v;
-        V.len = L2_norm(v); 
-
+        // free e_p
         for (int c = 0; c < 2; c++) {
             free(e_p[c]);
             e_p[c] = NULL;
@@ -50,26 +70,22 @@ int listSieve(float** basis, float mu, shortVec* result) {
         e_p = NULL;
 
         if (i == 0) {
-            shortVecs[0] = V; 
-        } 
+            shortVecs[0] = v;
+        }
 
-        long int nVecs = i + 1;
+        long int nVecs = i + 1; 
         for (int j = 0; j < nVecs; j++) {
-            float* diff = vec_diff(shortVecs[j].vec, V.vec);
+            // for every vector in shortVecs calculate the difference between it and v
+            float* diff = vec_diff(shortVecs[j], v);
             float lenDiff = L2_norm(diff);
+            // check if v can be reduced by a vector in shortVecs without producing a 0 vector 
             if ((lenDiff < mu) && (lenDiff != 0)) {
-                shortVec* shortestVector = (shortVec*)malloc(sizeof(shortVec));
-                if (shortestVector == NULL) {
-                    printf("Memory allocation failed.\n");
-                    exit(EXIT_FAILURE);
-                }
-                shortestVector->vec = diff;
-                shortestVector->len = lenDiff;
-
-                memcpy(result, shortestVector, sizeof(shortVec));
+                // allocate memory to store v - as shortestVector
+                result = v;
+                // free any memory 
                 for (int a = 0; a < nVecs; a++) {
-                    free(shortVecs[a].vec);
-                    shortVecs[a].vec = NULL;
+                    free(shortVecs[a]);
+                    shortVecs[a] = NULL;
                 }
                 free(shortVecs); 
 
@@ -78,32 +94,33 @@ int listSieve(float** basis, float mu, shortVec* result) {
                     L[b] = NULL;
                 }
                 free(L);
+                // exit 
                 return 0; 
             }
         }
         size_t newSize = nVecs + 1;
-        shortVec* temp = (shortVec*)realloc(shortVecs, newSize * sizeof(shortVec));
+        float* temp = (float*)realloc(shortVecs, newSize * sizeof(float));
         if (temp == NULL) {
             printf("Memory reallocation failed.\n");
-            exit(EXIT_FAILURE);
+            return -1;
         }
-        shortVecs = temp;
-        shortVecs[nVecs - 1] = V; 
-    } 
-
+        shortVecs = &temp;
+        shortVecs[nVecs] = v; 
+    }
+    // sampling loop has terminated without a vector being found shorter than mu
     long int nVecs = k;
-
-    shortestVec = &shortVecs[0];
+    // iterate over shortVecs to find the shortest vector 
+    result = shortVecs[0];
     for (int l = 1; l < nVecs; l++) {
-        if (shortVecs[l].len < shortestVec->len) {
-            memcpy(result, &shortVecs[l], sizeof(shortVec));
-            break;
+        if (L2_norm(shortVecs[l]) < L2_norm(result)) {
+            result = shortVecs[l];
         }
     }
 
+    // free memory 
     for (int a = 0; a < nVecs; a++) {
-        free(shortVecs[a].vec);
-        shortVecs[a].vec = NULL;
+        free(shortVecs[a]);
+        shortVecs[a] = NULL;
     }
     free(shortVecs); 
     shortVecs = NULL;
@@ -115,4 +132,5 @@ int listSieve(float** basis, float mu, shortVec* result) {
     free(L);
     L = NULL;
     return 0; 
-}
+
+} 

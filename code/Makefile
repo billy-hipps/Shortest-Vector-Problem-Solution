@@ -6,10 +6,10 @@ CFLAGS = -Wall -Wextra
 
 
 all: $(OBJECTS) main.c $(DEPS)
-	$(CC) $(CFLAGS) -o runme main.c $(OBJECTS) -lm -g -fsanitize=address
+	$(CC) $(CFLAGS) -g -o runme main.c $(OBJECTS) -lm 
 
 %.o: %.c $(DEPS)
-	$(CC) -c $< -o $@
+	$(CC) -g -c $< -o $@
 
 %.o: tests/%.c $(OBJECTS)
 	$(CC) -c $< -o $@ 

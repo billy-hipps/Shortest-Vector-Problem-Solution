@@ -21,7 +21,7 @@ void scalar_prod(int a, float* vec, float* result) {
 }
 
 float* vec_diff(float* vec1, float* vec2) {
-    float* result = (float*) malloc(dim * sizeof(int));
+    float* result = (float*) malloc(dim * sizeof(float));
     for (int i; i < dim; i++) {
         result[i] = vec1[i] - vec2[i];
     }
@@ -30,7 +30,7 @@ float* vec_diff(float* vec1, float* vec2) {
 
 float L2_norm(float* vec) {
     float total = 0;
-    for (int i; i < dim; i++) {
+    for (int i = 0; i < dim; i++) {
         total += pow(fabs(vec[i]), 2);
     }
     total = sqrtf(total);

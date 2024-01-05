@@ -9,6 +9,7 @@ RUN apt-get update && apt-get install -y \
     gcc \
     gdb \
     bash \
+    valgrind\
     && rm -rf /var/lib/apt/lists/*
 WORKDIR /code
 ENTRYPOINT ["bash"]

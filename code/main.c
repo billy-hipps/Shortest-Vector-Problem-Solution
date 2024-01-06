@@ -23,12 +23,8 @@ int main(int argc, char *argv[]) {
     if (status == 0) {
         // The result is available in shortestVecResult
         // write norm to a txt file
-        printf("shortest vector:\n");
-        for (int i = 0; i < dim; i++) {
-            printf("%f\n", shortestVector[i]);
-        }
-        float len = L2_norm(shortestVector);
-        writeTXT(len);
+        //float len = L2_norm(shortestVector);
+        //writeTXT(len);
         free(shortestVector);
         shortestVector = NULL;
     } else {

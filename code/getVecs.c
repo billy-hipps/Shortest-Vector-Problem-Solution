@@ -24,13 +24,13 @@ int getVecs(float** basis, float** L) {
         }
         // create 'dim' random numbers 
         int* multipliers = (int*) malloc(dim * sizeof(int));
-        if (L == NULL) {
+        if (multipliers == NULL) {
             printf("Memory allocation failed.\n");
             return -1;
         }
         
         for (int j = 0; j < dim; j++) {
-            multipliers[i] = (rand() %(max +1 -min)) + min;  
+            multipliers[j] = (rand() %(max +1 -min)) + min;  
         }
         // assign the linear product of the basis with the random numbers to L[i] 
         for (int k = 0; k < dim; k++) {

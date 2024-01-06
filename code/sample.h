@@ -1,1 +1,1 @@
-int sample(float** Basis, float radius, float** result);
+int sample(float** Basis, float* result);

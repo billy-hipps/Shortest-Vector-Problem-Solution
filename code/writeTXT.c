@@ -4,7 +4,7 @@
 
 #include "writeTXT.h"
 
-void writeTXT(float norm) {
+void writeTXT(double norm) {
     printf("writeTXT");
     FILE *f = fopen("result.txt", "w");
     if (f == NULL) {
@@ -12,7 +12,7 @@ void writeTXT(float norm) {
         exit(1);
     }
 
-    fprintf(f, "%f", norm);
+    fprintf(f, "%lf", norm);
 
     fclose(f);
 }

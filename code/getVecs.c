@@ -4,43 +4,24 @@
 #include <time.h>
 
 #include "getVecs.h"
+#include "sample.h"
 #include "common.h"
-
-#define max 5
-#define min -5
 
 // function to produce random linear combinations of basis vectors 
 // returns L - list of lattice vectors 
 
-int getVecs(float** basis, float** L) {
+int getVecs(double** basis, double** L) {
 
-    long n = pow(2, dim) / 2; 
+    long n = 2 * (pow(2, dim)); 
 
     for (int i = 0; i < n; i++) {
-        L[i] = (float*) calloc(dim, sizeof(float)); 
+        L[i] = (double*) calloc(dim, sizeof(double)); 
         if (L == NULL) {
             printf("Memory allocation failed.\n");
             return -1;
         }
-        // create 'dim' random numbers 
-        int* multipliers = (int*) malloc(dim * sizeof(int));
-        if (multipliers == NULL) {
-            printf("Memory allocation failed.\n");
-            return -1;
-        }
-        
-        for (int j = 0; j < dim; j++) {
-            multipliers[j] = (rand() %(max +1 -min)) + min;  
-        }
-        // assign the linear product of the basis with the random numbers to L[i] 
-        for (int k = 0; k < dim; k++) {
-            for (int f = 0; f < dim; f++) {
-                L[i][k] += basis[f][k] * (float)multipliers[f];
-            }
-        }
-        free(multipliers);
-        multipliers = NULL;
+        // add do while loop to sample unique vectors 
+        sample(basis, L[i]);
     }
-    // if multipliers is initialised outside loop, free here
     return 0; 
 }

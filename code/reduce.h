@@ -1,1 +1,1 @@
-float* reduce(float* p, float** L, float delta);
+double* reduce(double* p, double** L, double delta);

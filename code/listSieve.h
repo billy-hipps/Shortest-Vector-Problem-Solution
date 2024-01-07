@@ -1,1 +1,1 @@
-int listSieve(float** basis, float mu, float* result);
+int listSieve(double** basis, double mu, double* result);

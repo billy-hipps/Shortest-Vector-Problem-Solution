@@ -4,9 +4,11 @@ void set_dim(double d);
 
 double get_dim();
 
-void scalar_prod(int a, float *vec, float *result);
+void scalar_prod(int a, double *vec, double *result);
 
 
-float* vec_diff(float *vec1, float *vec2);
+double* vec_diff(double *vec1, double *vec2);
 
-float L2_norm(float *vec);
+double L2_norm(double *vec);
+
+int isIn(double* vec, double** list);

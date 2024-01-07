@@ -1,1 +1,1 @@
-float** getBasis(int argc, char** argv);
+double** getBasis(int argc, char** argv);

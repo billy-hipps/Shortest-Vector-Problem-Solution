@@ -1,1 +1,1 @@
-int sample(float** Basis, float* result);
+int sample(double** Basis, double* result);

@@ -4,6 +4,7 @@
 #include <time.h>
 
 #include "common.h"
+#include "checkArgs.h"
 #include "getBasis.h"
 #include "listSieve.h"
 #include "writeTXT.h"
@@ -12,9 +13,17 @@
 int main(int argc, char *argv[]) { 
 
     srand(time(NULL));
-    float** basis = getBasis(argc, argv);
-    float mu = 0.685;
-    float* shortestVector = (float*)malloc(dim * sizeof(float));
+    double** basis;
+    int argStatus = checkArgs(argc);
+    if (argStatus == 0) {
+        basis = getBasis(argc, argv);
+    } else {
+        printf("Error reading inputs.\n");
+        return -1;
+    }
+    
+    double mu = 0.685;
+    double* shortestVector = (double*)malloc(dim * sizeof(double));
     if (shortestVector == NULL) {
         printf("Memory allocation failed.\n");
         return -1;
@@ -23,7 +32,13 @@ int main(int argc, char *argv[]) {
     if (status == 0) {
         // The result is available in shortestVecResult
         // write norm to a txt file
-        //float len = L2_norm(shortestVector);
+        double len = L2_norm(shortestVector);
+        printf("len: %lf\n", len);
+        printf("SV:\n"); 
+        for (int i = 0; i < dim; i++) {
+            printf("%lf ", shortestVector[i]);
+        }
+        printf("\n");
         //writeTXT(len);
         free(shortestVector);
         shortestVector = NULL;

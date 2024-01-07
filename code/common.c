@@ -14,25 +14,41 @@ double get_dim() {
     return dim; 
 } 
 
-void scalar_prod(int a, float* vec, float* result) {
+void scalar_prod(int a, double* vec, double* result) {
     for (int i; i < dim; i++) {
         result[i] = vec[i] * a;
     } 
 }
 
-float* vec_diff(float* vec1, float* vec2) {
-    float* result = (float*) malloc(dim * sizeof(float));
+double* vec_diff(double* vec1, double* vec2) {
+    double* result = (double*) malloc(dim * sizeof(double));
     for (int i; i < dim; i++) {
         result[i] = vec1[i] - vec2[i];
     }
     return result; 
 }
 
-float L2_norm(float* vec) {
-    float total = 0;
+double L2_norm(double* vec) {
+    double total = 0;
     for (int i = 0; i < dim; i++) {
         total += pow(fabs(vec[i]), 2);
     }
     total = sqrtf(total);
     return total;
+}
+
+int isIn(double* vec, double** list) {
+    int nVecs = (sizeof(list)/sizeof(list[0]));
+    int flag = 0;
+    for (int i = 0; i < nVecs; i++) {
+        if (L2_norm(vec) == L2_norm(list[i])) {
+            for (int j = 0; j < dim; j++) {
+                if (vec[j] == list[i][j]) {
+                    flag = 1; 
+                    return flag;
+                }
+            }
+        }
+    }
+    return flag; 
 }

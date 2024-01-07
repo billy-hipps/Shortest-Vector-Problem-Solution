@@ -1,1 +1,1 @@
-void writeTXT(float norm);
+void writeTXT(double norm);

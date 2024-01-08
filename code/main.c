@@ -9,69 +9,73 @@
 #include "listSieve.h"
 #include "writeTXT.h"
 
-
-int main(int argc, char *argv[]) { 
-
+int main(int argc, char *argv[]) {
+    // Seed the random number generator with the current time
     srand(time(NULL));
+    // Declare variables
     double** basis;
+    double mu;
+    double* shortestBasis;
+    double* shortestVector;
+    // Check command line arguments
     int argStatus = checkArgs(argc);
     if (argStatus == 0) {
+        // Read basis vectors from command line arguments
         basis = getBasis(argc, argv);
     } else {
         printf("Error reading inputs.\n");
         return -1;
     }
-    
-    // finding the shortest basis 
-    double mu;
-    double* shortestBasis;
+    // Find the shortest basis vector and calculate mu
     shortestBasis = basis[0];
     for (int i = 0; i < dim; i++) {
         if (L2_norm(basis[i]) < L2_norm(shortestBasis)) {
-        shortestBasis = basis[i];
+            shortestBasis = basis[i];
         }
     }
     mu = L2_norm(shortestBasis);
-    double* shortestVector = (double*)malloc(dim * sizeof(double));
+    // Allocate memory for the shortest vector
+    shortestVector = (double*)malloc(dim * sizeof(double));
     if (shortestVector == NULL) {
         printf("Memory allocation failed.\n");
         return -1;
     }
-    printf("mu = %lf\n", mu);
+    // Perform listSieve algorithm to find the shortest vector
     int status = listSieve(basis, mu, shortestVector);
+    // Process the results based on the status
     if (status == 0) {
-        // The result is available in shortestVecResult
-        // write norm to a txt file
+        // A vector shorter than mu is found
         double len = L2_norm(shortestVector);
-        printf("len: %lf\n", len);
-        printf("SV:\n"); 
+        printf("Length: %lf\n", len);
+        printf("Shortest Vector:\n");
         for (int i = 0; i < dim; i++) {
             printf("%lf ", shortestVector[i]);
         }
         printf("\n");
-        //writeTXT(len);
+        // Free allocated memory
         free(shortestVector);
         shortestVector = NULL;
     } else if (status == 1) {
+        // No vector found with length less than mu
         printf("No vector found with length less than: %lf.\n Shortest vector has length: %lf\n", mu, mu);
-        printf("len: %lf\n", mu);
-        printf("SV:\n"); 
+        printf("Length: %lf\n", mu);
+        printf("Shortest Vector:\n");
         for (int i = 0; i < dim; i++) {
             printf("%lf ", shortestBasis[i]);
         }
         printf("\n");
-        //writeTXT(len);
+        // Free allocated memory
         shortestBasis = NULL;
     } else if (status == -1) {
-        printf("Error in listSieve()");
+        // Error in listSieve
+        printf("Error in listSieve()\n");
     }
-
+    // Free memory allocated for basis vectors
     for (int i = 0; i < dim; i++) {
         free(basis[i]);
         basis[i] = NULL;
     }
     free(basis);
     basis = NULL;
-
     return 0;
 }

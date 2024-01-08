@@ -8,13 +8,15 @@
 #include "reduce.h"
 #include "sample.h"
 
+// Function to perform the list sieve algorithm
 int listSieve(double** basis, double mu, double* result) {
-    // allocate memory for an array storing vectors to be used by reduce() 
+    // Allocate memory for an array storing vectors to be used by reduce()
     double **L = (double **)malloc(dim * sizeof(double *));
     if (L == NULL) {
         printf("Memory allocation failed.\n");
         return -1;
     }
+    // Initialize L with basis vectors
     for (int i = 0; i < dim; i++) {
         L[i] = (double *)malloc(dim * sizeof(double));
         if (L[i] == NULL) {
@@ -23,60 +25,47 @@ int listSieve(double** basis, double mu, double* result) {
         }
         memcpy(L[i], basis[i], dim * sizeof(double));
     }
-    double* v = NULL;
-    // set parameters for sample()
     double delta = 1 - (1 / dim);
-    // set limit to how many sample vectors are produced 
     int c = 2;
-    long k = (pow(2, (c*dim)));
-    // initialise variables for sampling
+    long k = (pow(2, (c * dim)));
     long int nSamples = dim;
-    double* diff;
-    double lenDiff;
-    int repeatFlag;
-    // sampling and reduction loop
-    while (nSamples < k) { 
-        printf("looping (nSamples: %ld, k: %ld)\n", nSamples, k);
+    double* v = NULL;
+    // Sampling and reduction loop
+    while (nSamples < k) {
+        // Allocate memory for a new vector v
         v = (double *)calloc(dim, sizeof(double));
         if (v == NULL) {
             printf("Memory allocation failed.\n");
             return -1;
         }
+        // Sample a vector and reduce it
         int sStatus = sample(basis, v);
         if (sStatus != 0) {
             printf("Error in sample.\n");
             return -1;
         }
-        // reduce v 
-        v = reduce(v, L, delta); 
-        printf("V: \n");
-        for (int r = 0; r < dim; r++) {
-            printf("%lf ", v[r]);
-        }
-        printf("\n");
+        v = reduce(v, L, delta);
+        // Compare v with existing vectors in L
         for (long int j = 0; j < nSamples; j++) {
-            // for every vector in L calculate the difference between it and v
-            diff = vec_diff(L[j], v);
-            lenDiff = L2_norm(diff);
-            printf("diff = %lf\n", lenDiff);
-            repeatFlag = isIn(v, L); 
+            double* diff = vec_diff(L[j], v);
+            double lenDiff = L2_norm(diff);
+            int repeatFlag = isIn(v, L);
+            // Check if v is in L
             if (repeatFlag == 0) {
-                // check if v can be reduced by a vector in L without producing a 0 vector 
+                // Check if v can be reduced by a vector in L without producing a 0 vector
                 if ((lenDiff < mu) && (lenDiff > 0)) {
-                    printf("lendiff: %lf\n", lenDiff);
                     memcpy(result, v, dim * sizeof(double));
-                    // free any memory 
                     free(v);
                     v = NULL;
                     for (int a = 0; a < nSamples; a++) {
                         free(L[a]);
                         L[a] = NULL;
                     }
-                    free(L); 
+                    free(L);
                     L = NULL;
-                    // exit 
-                    return 0; 
+                    return 0;
                 } else {
+                    // If v cannot be reduced, add it to L
                     size_t newSize = nSamples + 1;
                     double **temp = (double **)realloc(L, newSize * sizeof(double *));
                     if (temp == NULL) {
@@ -88,7 +77,7 @@ int listSieve(double** basis, double mu, double* result) {
                     if (L[nSamples] == NULL) {
                         printf("Memory allocation failed.\n");
                         return -1;
-                    } 
+                    }
                     memcpy(L[nSamples], v, dim * sizeof(double));
                     free(v);
                     v = NULL;
@@ -97,7 +86,7 @@ int listSieve(double** basis, double mu, double* result) {
                 }
             }
         }
-        //free v
+        // Free memory for vector v
         free(v);
         v = NULL;
         if (nSamples == k) {
@@ -105,13 +94,12 @@ int listSieve(double** basis, double mu, double* result) {
             break;
         }
     }
-    // sampling loop terminated -> could not find a vector smaller than mu. 
-    // free memory 
+    // Free memory allocated for vectors in L
     for (int a = 0; a < k; a++) {
         free(L[a]);
         L[a] = NULL;
     }
-    free(L); 
+    free(L);
     L = NULL;
-    return 1; 
+    return 1;
 }

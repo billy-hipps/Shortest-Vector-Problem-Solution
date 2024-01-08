@@ -1,6 +1,6 @@
 extern int dim;
 
-void set_dim(double d); 
+void set_dim(double d);
 
 double get_dim();
 

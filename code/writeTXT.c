@@ -11,8 +11,6 @@ void writeTXT(double norm) {
         printf("Error Creating File.");
         exit(1);
     }
-
     fprintf(f, "%lf", norm);
-
     fclose(f);
 }

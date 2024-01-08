@@ -4,82 +4,10 @@ KEY MARKING CRITERIA:
 // program should parse arguments, infer dimension and solve 
 // create a text file 'result.txt' with one number in it  
 
-Files to create: 
-sample.c - used to sample vectors on the lattice 
-    select a random error vector e a short vector in a hypersphere around the origin 
-    using e, find a corresponding lattice vector p by taking e % B  
-    v is a lattice vector such that: v = p - e
+tasks: 
+fix reduce so that it is correct for orthogonal bases 
+fix reduce and listsieve so that no vector appears twice 
+try to generalise the above 
 
-reduce.c - used to reduce sampled vectors 
-
-
-solver.c - brings together all files to solve SVP 
-
-REMEMBER TO FREE MEMORY IN listSieve.c 
-
-
-        int j = 0; 
-        long int nVecs = (sizeof(shortVecs)/sizeof(shortVecs[0]));
-        while (j < nVecs) {
-            if (shortVecs[j].len == V.len) {
-                int sameFlag = 0;
-                for (int k = 0; k < dim; k++) {
-                    if (shortVecs[j].vec[k] =! V.vec[k]) {
-                        flag = 1;
-                        break;
-                    }
-                }
-                if (sameFlag == 0) {
-                    
-                }
-            }
-
-        }
-
-issue in listsieve line 140: 
-need to review how memory for shortVecs is allocated. 
-current system: 
-allocate 1 shortVec
-enter loop: 
-    set the shortVec to the first sampled vector 
-    loop over shortVecs:
-        if < mu:
-            allocate shortestVector to store diff 
-            free(shortVecs)
-            return 0
-        else:
-            add v to end of shortVecs 
-    
-    find shortest vector 
-    copy to result 
-    free 
-    return 0
-
-solution - shortVecs is allocated in main so should be deallocated in main. 
-try to reduce amount of allocations/ deallocations. 
-
-#include <stdlib.h>
-#include <stdio.h>
-#include <math.h>
-#include <time.h>
-#include <string.h>
-
-#include "common.h"
-#include "sample.h" 
-
-int sample(float** basis, float radius, float** e_p) {
-
-    for (int i = 0; i < dim; i++) {
-        e_p[0][i] = radius * (2 * ((float)rand() / RAND_MAX) - 1);
-    }
-
-    for (int i = 0; i < dim; i++) {
-        e_p[1][i] = 0;
-        for (int j = 0; j < dim; j++) {
-            e_p[1][i] += e_p[0][j] * basis[j][i];
-        }
-        e_p[1][i] = fmod((double)e_p[1][i], 1.0);
-    }
-
-    return 0;
-}
+write LLL 
+test. 

@@ -1,1 +1,0 @@
-int getVecs(double** basis, double** result); 

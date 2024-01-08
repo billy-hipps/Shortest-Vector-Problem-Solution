@@ -7,8 +7,8 @@
 #include "common.h"
 #include "sample.h" 
 
-#define max 5
-#define min -5
+#define max 3
+#define min -3
 
 
 int sample(double** basis, double* v) {
@@ -19,30 +19,34 @@ int sample(double** basis, double* v) {
             longestBasis = L2_norm(basis[i]);
         }
     }  
-
-    do {
+    int* multipliers = (int*) malloc(dim * sizeof(int));
+    if (multipliers == NULL) {
+        printf("Memory allocation failed.\n");
+        return -1;
+    }
+    while (1) {
         for (int i = 0; i < dim; i++) {
             v[i] = 0;
         }
+
         // create 'dim' random numbers 
-        int* multipliers = (int*) malloc(dim * sizeof(int));
-        if (multipliers == NULL) {
-            printf("Memory allocation failed.\n");
-            return -1;
-        }
-        
         for (int j = 0; j < dim; j++) {
             multipliers[j] = (rand() %(max +1 -min)) + min;
         }
+
         // assign the linear product of the basis with the random numbers to L[i] 
         for (int k = 0; k < dim; k++) {
             for (int f = 0; f < dim; f++) {
                 v[k] += basis[f][k] * (double)multipliers[f];
             }
         }
-        free(multipliers);
-        multipliers = NULL;
 
-    } while ((L2_norm(v) <= (longestBasis * 1.5)) && (L2_norm(v) > (0)));
+        // Check the while condition
+        if ((L2_norm(v) > 0) && (L2_norm(v) <= (longestBasis * 2))) {
+            break;  // Exit the loop if the condition is met
+        }
+    }
+    free(multipliers);
+    multipliers = NULL;
     return 0;
 }

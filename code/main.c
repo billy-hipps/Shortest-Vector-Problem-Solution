@@ -22,12 +22,22 @@ int main(int argc, char *argv[]) {
         return -1;
     }
     
-    double mu = 0.685;
+    // finding the shortest basis 
+    double mu;
+    double* shortestBasis;
+    shortestBasis = basis[0];
+    for (int i = 0; i < dim; i++) {
+        if (L2_norm(basis[i]) < L2_norm(shortestBasis)) {
+        shortestBasis = basis[i];
+        }
+    }
+    mu = L2_norm(shortestBasis);
     double* shortestVector = (double*)malloc(dim * sizeof(double));
     if (shortestVector == NULL) {
         printf("Memory allocation failed.\n");
         return -1;
     }
+    printf("mu = %lf\n", mu);
     int status = listSieve(basis, mu, shortestVector);
     if (status == 0) {
         // The result is available in shortestVecResult
@@ -42,8 +52,18 @@ int main(int argc, char *argv[]) {
         //writeTXT(len);
         free(shortestVector);
         shortestVector = NULL;
-    } else {
-        printf("Error in listSieve.\n");
+    } else if (status == 1) {
+        printf("No vector found with length less than: %lf.\n Shortest vector has length: %lf\n", mu, mu);
+        printf("len: %lf\n", mu);
+        printf("SV:\n"); 
+        for (int i = 0; i < dim; i++) {
+            printf("%lf ", shortestBasis[i]);
+        }
+        printf("\n");
+        //writeTXT(len);
+        shortestBasis = NULL;
+    } else if (status == -1) {
+        printf("Error in listSieve()");
     }
 
     for (int i = 0; i < dim; i++) {

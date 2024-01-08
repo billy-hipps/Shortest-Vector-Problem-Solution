@@ -1,6 +1,6 @@
 OUTPUTS = runme test
-OBJECTS = checkArgs.o common.o getBasis.o getVecs.o listSieve.o reduce.o sample.o writeTXT.o
-DEPS = checkArgs.h common.h getBasis.h getVecs.h listSieve.h reduce.h sample.h writeTXT.h
+OBJECTS = checkArgs.o common.o getBasis.o listSieve.o reduce.o sample.o writeTXT.o
+DEPS = checkArgs.h common.h getBasis.h listSieve.h reduce.h sample.h writeTXT.h
 CC = gcc
 CFLAGS = -Wall -Wextra
 

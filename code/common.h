@@ -4,8 +4,9 @@ void set_dim(double d);
 
 double get_dim();
 
-void scalar_prod(int a, double *vec, double *result);
+long int checkLen(double** list);
 
+void scalar_prod(int a, double *vec, double *result);
 
 double* vec_diff(double *vec1, double *vec2);
 

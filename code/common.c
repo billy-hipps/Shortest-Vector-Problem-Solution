@@ -19,7 +19,6 @@ double get_dim() {
 
 // Function to check the length of a 2D array (list)
 long int checkLen(double** list) {
-    // Calculate the length by dividing the total size by the size of one element
     long int len = sizeof(list) / sizeof(list[0]);
     return len;
 }

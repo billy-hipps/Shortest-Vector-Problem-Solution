@@ -13,7 +13,7 @@ double** getBasis(int argc, char** argv) {
     d = sqrt((double)argc);
     set_dim(d);
     dim = get_dim();
-    // Allocate memory for a list of pointers to lists where the basis vectors will be stored
+    // Allocate memory for a list of pointers to lists to store basis vetcors
     static double **basis;
     basis = (double **)malloc(dim * sizeof(double *));
     if (basis == NULL) {

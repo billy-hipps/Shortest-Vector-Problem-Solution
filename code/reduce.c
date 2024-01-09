@@ -5,7 +5,7 @@
 
 #include "common.h"
 
-// Function to recursively reduce a vector p using vectors in L and a reduction factor delta
+// Function using lattice vectors to reduce a sampled lattice vector p
 double* reduce(double* p, double** L, double delta) {
     int nVecs = 2 * pow(2, dim);
     double len_p = delta * L2_norm(p);

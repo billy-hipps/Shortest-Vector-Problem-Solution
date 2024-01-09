@@ -52,7 +52,7 @@ int listSieve(double** basis, double mu, double* result) {
             int repeatFlag = isIn(v, L);
             // Check if v is in L
             if (repeatFlag == 0) {
-                // Check if v can be reduced by a vector in L without producing a 0 vector
+                // Check if v can be reduced by a vector in L
                 if ((lenDiff < mu) && (lenDiff > 0)) {
                     memcpy(result, v, dim * sizeof(double));
                     free(v);

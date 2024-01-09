@@ -57,7 +57,7 @@ int main(int argc, char *argv[]) {
         shortestVector = NULL;
     } else if (status == 1) {
         // No vector found with length less than mu
-        printf("No vector found with length less than: %lf.\n Shortest vector has length: %lf\n", mu, mu);
+        printf("No vector found with length < %lf.\n", mu);
         printf("Length: %lf\n", mu);
         printf("Shortest Vector:\n");
         for (int i = 0; i < dim; i++) {

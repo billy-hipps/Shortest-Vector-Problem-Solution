@@ -10,6 +10,9 @@
 #include "listSieve.h"
 #include "writeTXT.h"
 
+#define c 7
+#define k pow(2, (c*dim))
+
 int main(int argc, char *argv[]) {
     // Seed the random number generator with the current time
     srand(time(NULL));
@@ -23,25 +26,24 @@ int main(int argc, char *argv[]) {
         // Read basis vectors from command line arguments
         basis = getBasis(argc, argv);
     } else {
+        printf("Error reading inputs.\n");
         return -1;
     }
-    int c = 6;
-    long k = (pow(2, (c * dim)));
     // Allocate memory for reduced lattice vectors 
-    double **L = (double **)malloc((k+1) * sizeof(double *));
+    double **L = (double **)malloc((k) * sizeof(double *));
     if (L == NULL) {
-        printf("MEMORY ERROR: Error allocating memory.\n");
+        printf("Memory allocation failed.\n");
         return -1;
     }
     // Initialize L with basis vectors
     for (int i = 0; i < k; i++) {
         L[i] = (double *)malloc(dim * sizeof(double));
         if (L[i] == NULL) {
-            printf("MEMORY ERROR: Error allocating memory.\n");
+            printf("Memory allocation failed.\n");
             return -1;
         }
         if (i < dim) {
-            memcpy(L[i], basis[i], dim * sizeof(double));
+        memcpy(L[i], basis[i], dim * sizeof(double));
         }
     }
     // Find the shortest basis vector and calculate mu
@@ -70,4 +72,5 @@ int main(int argc, char *argv[]) {
     }
     free(L);
     L = NULL;
+
 }

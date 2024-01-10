@@ -8,15 +8,16 @@
 #include "reduce.h"
 #include "sample.h"
 
+#define c 7
+#define k pow(2, (c*dim))
+
 // Function to perform the list sieve algorithm
 double listSieve(double** basis, double** L, double mu, long int nSamples) {
     double delta = 1 - (1 / dim);
-    int c = 6;
-    long k = (pow(2, (c * dim)));
     double* vReduced = NULL;
-    double*v = (double *)calloc(dim, sizeof(double));
+    double* v = (double *)calloc(dim, sizeof(double));
     if (v == NULL) {
-        printf("MEMORY ERROR: Error allocating memory.\n");
+        printf("Memory allocation failed.\n");
         exit(EXIT_FAILURE);
     }
     for (; nSamples < k; nSamples++) {
@@ -29,31 +30,40 @@ double listSieve(double** basis, double** L, double mu, long int nSamples) {
         }
         vReduced = reduce(v, L, delta, nSamples);
         for (long int j = 0; j < nSamples; j++) {
-            //printf("J: %ld\n", j);
             double* diff = vec_diff(L[j], vReduced);
             double lenDiff = L2_norm(diff);
             int repeatFlag = isIn(vReduced, L, nSamples);
             // Check if v is in L
             if (repeatFlag == 0) {
+                //printf("no repeat\n");
                 // Check if v can be reduced by a vector in L
                 if ((lenDiff < mu) && (lenDiff > 0)) {
                     free(v);
                     v = NULL;
                     free(diff);
                     diff = NULL;
+                    //printf("recursing\n");
+                    printf("nSamples: %ld\n", nSamples);
                     printf("mu = %lf\n", lenDiff);
                     return listSieve(basis, L, lenDiff, nSamples);
                 } else {
                     // If v cannot be reduced, add it to L
-
                     memcpy(L[nSamples], vReduced, dim * sizeof(double));
-                    memset(v, 0, dim *sizeof(double));
+                    memset(v, 0, dim * sizeof(double));
+                    free(diff); 
+                    diff = NULL;
+                    break;
                 }
             } else {
                 free(diff);
                 diff = NULL;
             }
         } 
+        if (nSamples == k) {
+            free(v);
+            v = NULL;
+            break;
+        }
     }
     free(v);
     v = NULL;

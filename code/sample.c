@@ -22,7 +22,7 @@ int sample(double** basis, double* v) {
     // Allocate memory for multipliers array
     int* multipliers = (int*) malloc(dim * sizeof(int));
     if (multipliers == NULL) {
-        printf("Memory allocation failed.\n");
+        printf("MEMORY ERROR: Error allocating memory.\n");
         return -1;
     }
     // Loop until a valid vector is generated

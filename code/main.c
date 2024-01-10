@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <time.h>
+#include <string.h>
 
 #include "common.h"
 #include "checkArgs.h"
@@ -16,7 +17,6 @@ int main(int argc, char *argv[]) {
     double** basis;
     double mu;
     double* shortestBasis;
-    double* shortestVector;
     // Check command line arguments
     int argStatus = checkArgs(argc);
     if (argStatus == 0) {
@@ -26,6 +26,21 @@ int main(int argc, char *argv[]) {
         printf("Error reading inputs.\n");
         return -1;
     }
+    // Allocate memory for reduced lattice vectors 
+    double **L = (double **)malloc((dim+1) * sizeof(double *));
+    if (L == NULL) {
+        printf("Memory allocation failed.\n");
+        return -1;
+    }
+    // Initialize L with basis vectors
+    for (int i = 0; i < dim; i++) {
+        L[i] = (double *)malloc(dim * sizeof(double));
+        if (L[i] == NULL) {
+            printf("Memory allocation failed.\n");
+            return -1;
+        }
+        memcpy(L[i], basis[i], dim * sizeof(double));
+    }
     // Find the shortest basis vector and calculate mu
     shortestBasis = basis[0];
     for (int i = 0; i < dim; i++) {
@@ -34,42 +49,9 @@ int main(int argc, char *argv[]) {
         }
     }
     mu = L2_norm(shortestBasis);
-    // Allocate memory for the shortest vector
-    shortestVector = (double*)malloc(dim * sizeof(double));
-    if (shortestVector == NULL) {
-        printf("Memory allocation failed.\n");
-        return -1;
-    }
     // Perform listSieve algorithm to find the shortest vector
-    int status = listSieve(basis, mu, shortestVector);
-    // Process the results based on the status
-    if (status == 0) {
-        // A vector shorter than mu is found
-        double len = L2_norm(shortestVector);
-        printf("Length: %lf\n", len);
-        printf("Shortest Vector:\n");
-        for (int i = 0; i < dim; i++) {
-            printf("%lf ", shortestVector[i]);
-        }
-        printf("\n");
-        // Free allocated memory
-        free(shortestVector);
-        shortestVector = NULL;
-    } else if (status == 1) {
-        // No vector found with length less than mu
-        printf("No vector found with length < %lf.\n", mu);
-        printf("Length: %lf\n", mu);
-        printf("Shortest Vector:\n");
-        for (int i = 0; i < dim; i++) {
-            printf("%lf ", shortestBasis[i]);
-        }
-        printf("\n");
-        // Free allocated memory
-        shortestBasis = NULL;
-    } else if (status == -1) {
-        // Error in listSieve
-        printf("Error in listSieve()\n");
-    }
+    double result = listSieve(basis, L, mu, dim);
+    printf("result = %lf\n", result);
     // Free memory allocated for basis vectors
     for (int i = 0; i < dim; i++) {
         free(basis[i]);
@@ -78,4 +60,5 @@ int main(int argc, char *argv[]) {
     free(basis);
     basis = NULL;
     return 0;
+    // Free memory allocated for lattice vectors
 }

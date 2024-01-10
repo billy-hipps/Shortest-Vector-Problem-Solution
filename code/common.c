@@ -17,12 +17,6 @@ double get_dim() {
     return dim;
 }
 
-// Function to check the length of a 2D array (list)
-long int checkLen(double** list) {
-    long int len = sizeof(list) / sizeof(list[0]);
-    return len;
-}
-
 // Function to compute the scalar product of a vector and a scalar
 void scalar_prod(int a, double* vec, double* result) {
     for (int i = 0; i < dim; i++) {
@@ -52,13 +46,12 @@ double L2_norm(double* vec) {
 }
 
 // Function to check if a vector is in a list of vectors
-int isIn(double* vec, double** list) {
-    long int len = checkLen(list);
-    int flag = 0;
-    for (long int i = 0; i < len; i++) {
+int isIn(double* vec, double** list, long int nVectors) {
+    int flag = 1;
+    for (long int i = 0; i < nVectors; i++) {
         for (int j = 0; j < dim; j++) {
-            if (vec[j] == list[i][j]) {
-                flag = 1;
+            if (vec[j] != list[i][j]) {
+                flag = 0;
                 break;
             }
         }

@@ -36,3 +36,5 @@ void gramSchmidt(double **V, double **U, int dim) {
         }
     }
 }
+issue: 
+nSamples does does not increment if the sampled vector is in 

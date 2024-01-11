@@ -1,1 +1,1 @@
-double listSieve(double** basis, double** L, double mu, long int nSamples);
+double listSieve(double** basis, double** L, double mu, long nSamples);

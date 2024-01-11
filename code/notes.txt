@@ -36,5 +36,37 @@ void gramSchmidt(double **V, double **U, int dim) {
         }
     }
 }
-issue: 
-nSamples does does not increment if the sampled vector is in 
+change vec_diff so that it does not allocate any memory 
+make changes to listsieve, common, reduce 
+
+intitial p input 
+find delta*lenP
+for i in L 
+    allocate 
+    p - L[i]
+    len(p - L[i])
+    if len < lenP
+        copy (p - L[i]) to p
+        free 
+    else 
+        free 
+
+initial input p 
+delta*lenP
+
+double* reduce(double* p, double** L, double delta, long int nSamples) {
+    double len_p = delta * L2_norm(p);
+    // Loop through the vectors in L to reduce p
+    for (int i = 0; i < nSamples; i++) {
+        double* diff = vec_diff(p, L[i]);
+        double len = L2_norm(diff);
+        if ((len <= len_p) && (len != 0)) {
+            memcpy(p, diff, sizeof(double));
+            free(diff);
+            diff = NULL;
+        }
+        free(diff);
+        diff = NULL;
+    }
+    return p;
+}

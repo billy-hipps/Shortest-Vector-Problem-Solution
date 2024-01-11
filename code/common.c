@@ -26,13 +26,10 @@ void scalar_prod(int a, double* vec, double* result) {
 }
 
 // Function to compute the element-wise difference of two vectors
-double* vec_diff(double* vec1, double* vec2) {
-    // Allocate memory for the result vector
-    double* result = (double*)malloc(dim * sizeof(double));
+void vec_diff(double* dest, double* vec1, double* vec2) {
     for (int i = 0; i < dim; i++) {
-        result[i] = vec1[i] - vec2[i];
+        dest[i] = vec1[i] - vec2[i];
     }
-    return result;
 }
 
 // Function to compute the L2 norm (Euclidean norm) of a vector

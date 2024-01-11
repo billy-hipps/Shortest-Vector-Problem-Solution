@@ -1,23 +1,16 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include <math.h>
 #include <string.h>
 
 #include "common.h"
 
-// recursive function for reducing sample vectors 
-double* reduce(double* p, double** L, double delta, long nSamples) {
-    double len_p = delta * L2_norm(p);
-    // Create a temporary array for the difference outside the loop
-    double* diff = (double*)malloc(dim * sizeof(double));
-    if (diff == NULL) {
-        printf("MEMORY ERROR: Error allocating memory.\n");
-        exit(EXIT_FAILURE);
-    }
+// Function using lattice vectors to reduce a sampled lattice vector p
+double* reduce(double* p, double** L, double delta, long int nSamples) {
+    double len_p = delta * l2Norm(p);
     // Loop through the vectors in L to reduce p
-    for (int i = 0; i < nSamples; i++) {
-        vec_diff(diff, p, L[i]);
-        double len = L2_norm(diff);
+    for (long i = 0; i < nSamples; i++) {
+        double* diff = vecDiff(p, L[i]);
+        double len = l2Norm(diff);
         // Check if lenght is smaller after subtraction
         if ((len <= len_p) && (len != 0)) {
             // Copy new value to p

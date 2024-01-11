@@ -1,18 +1,16 @@
-extern int dim;
+extern long dim;
 
 extern int c;
 
-void set_dim(double d);
+void setDim(double d);
 
-double get_dim();
+double getDim();
 
-void scalar_prod(int a, double* vec, double* result);
+double* vecDiff(double *vec1, double *vec2);
 
-void vec_diff(double* dest, double* vec1, double* vec2);
+double l2Norm(double *vec);
 
-double L2_norm(double* vec);
-
-int isIn(double* vec, double** list, long int nVectors);
+int isIn(double* vec, double** list, long nVectors);
 
 double dotProd(double* vec1, double* vec2);
 

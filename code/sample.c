@@ -13,10 +13,10 @@
 // Function to generate a random vector v using the basis vectors
 int sample(double** basis, double* v) {
     // Find the longest basis vector
-    double longestBasis = L2_norm(basis[0]);
-    for (int i = 1; i < dim; i++) {
-        if (L2_norm(basis[i]) > longestBasis) {
-            longestBasis = L2_norm(basis[i]);
+    double longestBasis = l2Norm(basis[0]);
+    for (long i = 1; i < dim; i++) {
+        if (l2Norm(basis[i]) > longestBasis) {
+            longestBasis = l2Norm(basis[i]);
         }
     }
     // Allocate memory for multipliers array
@@ -28,21 +28,21 @@ int sample(double** basis, double* v) {
     // Loop until a valid vector is generated
     while (1) {
         // Initialize vector v to zeros
-        for (int i = 0; i < dim; i++) {
+        for (long i = 0; i < dim; i++) {
             v[i] = 0;
         }
         // Generate 'dim' random numbers as multipliers
-        for (int j = 0; j < dim; j++) {
+        for (long j = 0; j < dim; j++) {
             multipliers[j] = (rand() %(max + 1 - min)) + min;
         }
         // Compute the linear combination of basis vectors with multipliers
-        for (int k = 0; k < dim; k++) {
-            for (int f = 0; f < dim; f++) {
+        for (long k = 0; k < dim; k++) {
+            for (long f = 0; f < dim; f++) {
                 v[k] += basis[f][k] * (double)multipliers[f];
             }
         }
         // Check the while condition
-        if ((L2_norm(v) > 0) && (L2_norm(v) <= (longestBasis * 2))) {
+        if ((l2Norm(v) > 0) && (l2Norm(v) <= (longestBasis * 2))) {
             break;  // Exit the loop if the condition is met
         }
     }

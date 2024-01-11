@@ -16,10 +16,7 @@ double listSieve(double** basis, double** L, double mu, long nSamples) {
     double* vReduced = NULL;
     double* diff;
     double lenDiff;
-    double* v = (double *)calloc(dim, sizeof(double));
-    double* vReduced = NULL;
-    int repeatFlag;
-    double lenDiff;
+    double* v = (double*)calloc(dim, sizeof(double));
     if (v == NULL) {
         printf("MEMORY ERROR: Failed allocation.\n");
         exit(EXIT_FAILURE);
@@ -35,9 +32,9 @@ double listSieve(double** basis, double** L, double mu, long nSamples) {
         int repeatFlag = isIn(vReduced, L, nSamples);
         // Check if v is in L
         if (repeatFlag == 0) {
-            for (long int j = 0; j < nSamples; j++) {
-                diff = vec_diff(vReduced, L[j]);
-                lenDiff = L2_norm(diff);
+            for (long j = 0; j < nSamples; j++) {
+                diff = vecDiff(vReduced, L[j]);
+                lenDiff = l2Norm(diff);
                 // Check if v can be reduced by a vector in L
                 if ((lenDiff < mu) && (lenDiff > 0)) {
                     free(v);

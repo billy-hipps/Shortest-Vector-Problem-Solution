@@ -6,9 +6,9 @@
 
 // Checks if the number of arguments is valid
 int checkArgs(int argc) {
-    int nUnits = argc - 1;
-    int root = (int)sqrt(nUnits);
-    int root2 = root * root;
+    long nUnits = (long)argc - 1;
+    long root = (long)sqrt(nUnits);
+    long root2 = root * root;
     // Dimension must be > 2
     if (nUnits < 4) {
         printf("INPUT ERROR: Dimension < 2.\n");

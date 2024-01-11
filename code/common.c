@@ -29,9 +29,15 @@ void scalar_prod(int a, double* vec, double* result) {
 }
 
 // Function to compute the element-wise difference of two vectors
-void vec_diff(double* dest, double* vec1, double* vec2) {
+double* vec_diff(double* vec1, double* vec2) {
+    // Allocate memory for the result vector
+    double* result = (double*)malloc(dim * sizeof(double));
+    if (result == NULL) {
+        printf("MEMORY ERROR: Failed allocation.\n");
+        exit(EXIT_FAILURE);
+    }
     for (int i = 0; i < dim; i++) {
-        dest[i] = vec1[i] - vec2[i];
+        result[i] = vec1[i] - vec2[i];
     }
 }
 
@@ -60,6 +66,7 @@ int isIn(double* vec, double** list, long int nVectors) {
     return flag;
 }
 
+// Function to compute dot product of two vectors
 double dotProd(double* vec1, double* vec2) {
     double dotProd = 0;
     for (int i = 0; i < dim; i++) {
@@ -68,6 +75,7 @@ double dotProd(double* vec1, double* vec2) {
     return dotProd;
 }
 
+// Function to compute Cosine Similarity of two vectors
 double cosSimilarity(double* vec1, double*vec2) {
     double dot = dotProd(vec1, vec2);
     double v1Norm = L2_norm(vec1);

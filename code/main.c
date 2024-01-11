@@ -9,11 +9,16 @@
 #include "getBasis.h"
 #include "listSieve.h"
 #include "cosScore.h"
-#include "writeTXT.h"
 
 #define k pow(2, (c*dim))
 
 int main(int argc, char *argv[]) {
+    // Open a file to store the result
+    FILE *f = fopen("result.txt", "w");
+    if (f == NULL) {
+        printf("FILE ERROR: Could not create 'result.txt'.\n");
+        return -1;
+    }
     // Seed the random number generator with the current time
     srand(time(NULL));
     // Declare variables
@@ -26,21 +31,28 @@ int main(int argc, char *argv[]) {
         // Read basis vectors from command line arguments
         basis = getBasis(argc, argv);
     } else {
-        printf("Error reading inputs.\n");
+        fclose(f);
         return -1;
     }
-    c = cosScore(basis); 
-    // Allocate memory for reduced lattice vectors 
+    c = cosScore(basis);
+    if (c == 0) {
+        printf("INPUT ERROR: Basis vectors are the same.\n");
+        fclose(f);
+        return -1;
+    }
+    // Allocate memory for reduced lattice vectors
     double **L = (double **)malloc((k) * sizeof(double *));
     if (L == NULL) {
-        printf("Memory allocation failed.\n");
+        printf("MEMORY ERROR: Failed allocation.\n");
+        fclose(f);
         return -1;
     }
     // Initialize L with basis vectors
     for (int i = 0; i < k; i++) {
         L[i] = (double *)malloc(dim * sizeof(double));
         if (L[i] == NULL) {
-            printf("Memory allocation failed.\n");
+            printf("MEMORY ERROR: Failed allocation.\n");
+            fclose(f);
             return -1;
         }
         if (i < dim) {
@@ -54,10 +66,13 @@ int main(int argc, char *argv[]) {
             shortestBasis = basis[i];
         }
     }
+    // Start search using length of shortest basis vector
     mu = L2_norm(shortestBasis);
     // Perform listSieve algorithm to find the shortest vector
     double result = listSieve(basis, L, mu, dim);
-    printf("result = %lf\n", result);
+    // Write the result to result.txt
+    fprintf(f, "%lf", result);
+    fclose(f);
     // Free memory allocated for basis vectors
     for (int i = 0; i < dim; i++) {
         free(basis[i]);
@@ -73,5 +88,4 @@ int main(int argc, char *argv[]) {
     }
     free(L);
     L = NULL;
-
 }

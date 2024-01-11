@@ -1,1 +1,0 @@
-void writeTXT(double norm);

@@ -13,16 +13,18 @@
 // Function to perform the list sieve algorithm
 double listSieve(double** basis, double** L, double mu, long nSamples) {
     double delta = 1 - (1 / dim);
+    double* vReduced = NULL;
+    double* diff;
+    double lenDiff;
     double* v = (double *)calloc(dim, sizeof(double));
     double* vReduced = NULL;
     int repeatFlag;
     double lenDiff;
     if (v == NULL) {
-        printf("Memory allocation failed.\n");
+        printf("MEMORY ERROR: Failed allocation.\n");
         exit(EXIT_FAILURE);
     }
-    for (; nSamples < k; nSamples++)  {
-        //printf("nSamples: %ld\n", nSamples);
+    for (; nSamples < k; nSamples++) {
         // Sample a vector and reduce it
         int sStatus = sample(basis, v);
         if (sStatus != 0) {
@@ -30,35 +32,35 @@ double listSieve(double** basis, double** L, double mu, long nSamples) {
             exit(EXIT_FAILURE);
         }
         vReduced = reduce(v, L, delta, nSamples);
-        repeatFlag = isIn(vReduced, L, nSamples);
+        int repeatFlag = isIn(vReduced, L, nSamples);
         // Check if v is in L
         if (repeatFlag == 0) {
-            //printf("no repeat\n");
-            // Check if v can be reduced by a vector in L
-            for (long j = 0; j < nSamples; j++) {
-                vec_diff(v, vReduced, L[j]);
-                lenDiff = L2_norm(v); 
+            for (long int j = 0; j < nSamples; j++) {
+                diff = vec_diff(vReduced, L[j]);
+                lenDiff = L2_norm(diff);
+                // Check if v can be reduced by a vector in L
                 if ((lenDiff < mu) && (lenDiff > 0)) {
                     free(v);
                     v = NULL;
-                    //printf("recursing\n");
-                    printf("nSamples: %ld\n", nSamples);
-                    printf("mu = %lf\n", lenDiff);
+                    free(diff);
+                    diff = NULL;
+                    // Recurse into lenDiff
                     return listSieve(basis, L, lenDiff, nSamples);
                 } else {
                     // If v cannot be reduced, add it to L
-                    repeatFlag = isIn(v, L, nSamples);
-                    if (repeatFlag == 0) {
-                        //printf("adding\n");
-                        memcpy(L[nSamples], vReduced, dim * sizeof(double));
-                        memset(v, 0, dim * sizeof(double));
-                        break;
-                    }
+                    memcpy(L[nSamples], vReduced, dim * sizeof(double));
+                    // Reset v to 0s
+                    memset(v, 0, dim * sizeof(double));
+                    free(diff);
+                    diff = NULL;
+                    break;
                 }
             }
         }
     }
-free(v);
-v = NULL;
-return mu;
+    // Sampling limit has been reached
+    free(v);
+    v = NULL;
+    // No smaller mu found
+    return mu;
 }

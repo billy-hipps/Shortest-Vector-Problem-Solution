@@ -18,8 +18,12 @@ double* reduce(double* p, double** L, double delta, long nSamples) {
     for (int i = 0; i < nSamples; i++) {
         vec_diff(diff, p, L[i]);
         double len = L2_norm(diff);
-        if ((len < len_p) && (len != 0)) {
-            memcpy(p, diff, dim * sizeof(double));
+        // Check if lenght is smaller after subtraction
+        if ((len <= len_p) && (len != 0)) {
+            // Copy new value to p
+            memcpy(p, diff, sizeof(double));
+            free(diff);
+            diff = NULL;
         }
     }
 

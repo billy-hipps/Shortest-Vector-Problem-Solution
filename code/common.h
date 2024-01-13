@@ -1,4 +1,4 @@
-extern long dim;
+extern int dim;
 
 extern int c;
 
@@ -10,7 +10,7 @@ double* vecDiff(double *vec1, double *vec2);
 
 double l2Norm(double *vec);
 
-int isIn(double* vec, double** list, long nVectors);
+int isIn(double* vec, double** list, int32_t nVectors);
 
 double dotProd(double* vec1, double* vec2);
 

@@ -1,1 +1,1 @@
-double* reduce(double* p, double** L, double delta, long nSamples);
+double* reduce(double* p, double** L, double delta, int32_t nSamples);

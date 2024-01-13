@@ -20,7 +20,7 @@ int sample(double** basis, double* v) {
         }
     }
     // Allocate memory for multipliers array
-    int* multipliers = (int*) malloc(dim * sizeof(int));
+    int* multipliers = (int*)malloc(dim * sizeof(int));
     if (multipliers == NULL) {
         printf("MEMORY ERROR: Failed allocation.\n");
         return -1;

@@ -21,14 +21,14 @@ double** getBasis(int argc, char** argv) {
         exit(EXIT_FAILURE);
     }
     // Allocate memory for, and copy command line arguments into basis vectors
-    for (long i = 1; i < argc; i += dim) {
+    for (int i = 1; i < argc; i += dim) {
         basis[i / dim] = (double *)malloc(dim * sizeof(double));
         if (basis[i / dim] == NULL) {
             printf("MEMORY ERROR: Failed allocation.\n");
             exit(EXIT_FAILURE);
         }
         sscanf(argv[i], "[%lf", &basis[i / dim][0]);
-        for (long j = 1; j < dim - 1; j++) {
+        for (int j = 1; j < dim - 1; j++) {
             sscanf(argv[i + j], "%lf", &basis[i / dim][j]);
         }
         sscanf(argv[i + dim - 1], "%lf", &basis[i / dim][dim - 1]);

@@ -6,12 +6,12 @@
 
 int cosScore(double** basis) {
     double sum = 0;
-    long pairCount = 0;
+    int pairCount = 0;
     double similarity;
     double avgSim;
     // Generate average Cosine Similarity of basis vectors
-    for (long i = 0; i < (dim-1); i++) {
-        for (long j = (i + 1); j < dim; j++) {
+    for (int i = 0; i < (dim-1); i++) {
+        for (int j = (i + 1); j < dim; j++) {
             similarity = cosSimilarity(basis[i], basis[j]);
             sum += similarity;
             pairCount++;
@@ -37,7 +37,7 @@ int cosScore(double** basis) {
         return 5;  // c = 5 for similarity between 0.45 and 0.6
     } else if (avgSim < 0.75) {
         return 6;  // c = 6 for similarity between 0.6 and 0.75
-    } else if (avgSim < 1) {
-        return 7;  // c = 7 for similarity between 0.75 and 0.9
+    } else {
+        return 7;  // c = 7 for similarity > 0.75
     }
 }

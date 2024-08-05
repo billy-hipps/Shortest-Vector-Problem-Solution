@@ -10,9 +10,6 @@ all: $(OBJECTS) main.c $(DEPS)
 %.o: %.c $(DEPS)
 	$(CC) -g -c $< -o $@
 
-%.o: tests/%.c $(OBJECTS)
-	$(CC) -c $< -o $@
-
 clean:
 	rm -rf $(OUTPUTS) $(OBJECTS)
 

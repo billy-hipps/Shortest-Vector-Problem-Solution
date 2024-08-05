@@ -1,5 +1,5 @@
 FROM ubuntu:latest
-LABEL maintainer="billy hipps <billyhipperson@hotmail.co.uk>" \
+LABEL maintainer="username <email adress>" \
         description="Cool"
 RUN mkdir /code 
 

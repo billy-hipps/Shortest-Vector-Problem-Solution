@@ -84,7 +84,7 @@ To improve the time complexity, the original form of the sample subroutine could
 ## Instructions for Running the Program
 
 - 1. Install the prerequistites.
-- 2. Construct the Docker container. 
+- 2. Construct the Docker container (if using any OS other than Ubuntu Linux). 
 - 3. Make and run the program. 
 
 ### Prerequisites
@@ -95,7 +95,7 @@ Ensure you have `gcc` and `make` installed on your system.
 
 ### Building the Docker Container
 
-To build the Docker container, ensure you have Docker installed on your system. Navigate to the directory containing the `Dockerfile` and run the following command:
+To build the Docker container, ensure you have Docker installed on your system. Open the `Dockerfile` and enter your username and email to the marked areas, then save and run the following command:
 
 ```sh
 docker build -t svp-listsieve
